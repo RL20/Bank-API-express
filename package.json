@@ -1,0 +1,27 @@
+{
+  "name": "bank-api-express-node",
+  "version": "1.0.0",
+  "description": "| Property | Type     | Description                                                  |\r | -------- | -------- | ------------------------------------------------------------ |\r | userId   | `String` | <p>Unique id </p>                                            |\r | name     | `String` | <p>User name(should also be unique to prevent duplicates</p> |\r | cash     | `Number` | <p>Default 0</p>                                             |\r | credit   | `Number` | <p>Default 0</p>                                             |",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RL20/bank-api-express-node.js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RL20/bank-api-express-node.js/issues"
+  },
+  "homepage": "https://github.com/RL20/bank-api-express-node.js#readme",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15",
+    "uuid": "^8.3.2"
+  }
+}
