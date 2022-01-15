@@ -40,12 +40,12 @@ const addUser = (obj) => {
 //update user
 const updateUser = (id, obj /*{ userId, name, cash, credit }*/) => {
   const users = loadUsers();
-  let userToUpdate = users.findIndex((user) => user.userId === id);
+  let userToUpdateIndex = users.findIndex((user) => user.userId === id);
   if (userToUpdate) {
     console.log(chalk.red("User not found"));
     throw Error("User not found");
   } else {
-    users[userToUpdate] = { ...users[userToUpdate], ...obj };
+    users[userToUpdateIndex] = { ...users[userToUpdateIndex], ...obj };
     saveUsers(users);
     console.log(chalk.inverse.green("User updated"));
     return "User updated successfully";
