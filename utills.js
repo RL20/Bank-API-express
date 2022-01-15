@@ -4,11 +4,12 @@ const fs = require("fs");
 const chalk = require("chalk");
 // const { v4: uuidv4 } = require("uuid");
 
+//get all users
 const getUsers = () => {
   const users = loadUsers();
   return users;
 };
-
+//get user by id
 const getUser = (id) => {
   const users = loadUsers();
   const userToGet = users.find((usr) => usr.userId === id);
@@ -21,7 +22,7 @@ const getUser = (id) => {
     return userToGet;
   }
 };
-
+//add user
 const addUser = (obj) => {
   console.log("reach addUser");
   const users = loadUsers();
@@ -36,32 +37,22 @@ const addUser = (obj) => {
     throw Error("The user is allready exist");
   }
 };
-
+//update user
 const updateUser = (id, obj /*{ userId, name, cash, credit }*/) => {
   const users = loadUsers();
-  let userToUpdate = users.find((user) => user.userId === id);
-  if (!userToUpdate) {
+  let userToUpdate = users.findIndex((user) => user.userId === id);
+  if (userToUpdate) {
     console.log(chalk.red("User not found"));
     throw Error("User not found");
   } else {
-    // userToUpdate = { ...userToUpdate, ...obj };
-
-    console.log(`userToUp`, userToUpdate);
-    if (obj.name) {
-      userToUpdate.name = obj.name;
-    }
-    if (obj.cash) {
-      userToUpdate.cash = obj.cash;
-    }
-    if (obj.credit) {
-      userToUpdate.credit = obj.credit;
-    }
+    users[userToUpdate] = { ...users[userToUpdate], ...obj };
     saveUsers(users);
     console.log(chalk.inverse.green("User updated"));
     return "User updated successfully";
   }
 };
 
+//Remove user
 const removeUser = (id) => {
   const users = loadUsers();
   const newUsers = users.filter((usr) => {
@@ -77,12 +68,14 @@ const removeUser = (id) => {
     return "User deleted successfully";
   }
 };
+
 //? actions function---------------------------------------------------------------
 const deposit = (id, amount) => {
   const user = getUser(id);
   user.cash = user.cash + amount;
   return updateUser(id, user);
 };
+
 const updateCredit = (id, newCredit) => {
   if (newCredit > 0) {
     const user = getUser(id);
@@ -90,6 +83,7 @@ const updateCredit = (id, newCredit) => {
     return updateUser(id, user);
   } else throw Error("Credit can not be negetive");
 };
+
 const withdraw = (id, amount) => {
   const user = getUser(id);
   const withdrawMax = user.cash + user.credit;
@@ -99,6 +93,7 @@ const withdraw = (id, amount) => {
     return updateUser(id, user);
   } else throw Error(`the maximun amount you can withdraw is ${withdrawMax}`);
 };
+
 const transfer = (depositorId, beneficiaryId, amount) => {
   const user = getUser(depositorId);
   const withdrawMax = user.cash + user.credit;
@@ -120,31 +115,6 @@ const transfer = (depositorId, beneficiaryId, amount) => {
   }
   return `transfer ${amount} to ${getUser(beneficiaryId).name} complited successfully`;
 };
-// const transfer = (depositorId, beneficiaryId, amount) => {
-//   try {
-//     withdraw(depositorId, amount);
-//     deposit(beneficiaryId, amount);
-//     return `transfer ${amount} to ${getUser(beneficiaryId).name} complited successfully`;
-//   } catch (e) {
-//     const user = getUser(depositorId);
-//     const withdrawMax = user.cash + user.credit;
-//     throw Error(`the maximun amount you can transfer is ${withdrawMax}`);
-//   }
-// };
-
-// Can deposit cash to a user. (by the users passport id and
-// amount of cash)
-
-// Update credit
-// Can update a users credit (only positive numbers)
-
-// Withdraw money
-// Can withdraw money from the user (can withdraw money until
-// the cash and credit run out)
-
-// Transferring
-// Can transfer money from one user to another with credit(can
-// transfer money until the cash and credit run out)
 
 //! helper functions---------------------------------------------------------------
 const loadUsers = () => {
